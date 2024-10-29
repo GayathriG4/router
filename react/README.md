@@ -3,7 +3,7 @@
 
 The Add to Cart React Application is a simple e-commerce frontend built with ReactJS, designed to showcase a list of products fetched from the Fake Store API. It allows users to browse products, add them to a cart, view cart contents, and remove items from the cart.
 
-Key Features
+Key Features:
 
 
 Product Listing: The app fetches product data from the Fake Store API and displays each product with its image, title, description, and price.
