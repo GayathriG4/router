@@ -1,58 +1,72 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import axios from 'axios';
 import Navbar from './components/Navbar';
-import Product from './components/Product';
-import CartModal from './components/CartModal';
+import ProductList from './components/ProductList';
+import CartPage from './components/CartPage';
 
 const API_URL = 'https://fakestoreapi.com/products';
 
 function App() {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Fetch products data from API on component mount
   useEffect(() => {
-    fetch(API_URL)
-      .then((response) => response.json())
-      .then((data) => setProducts(data))
+    axios.get(API_URL)
+      .then((response) => {
+        setProducts(response.data);
+      })
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
-  // Function to add product to cart
   const addToCart = (product) => {
-    if (cart.some((item) => item.id === product.id)) {
-      alert('Item already added to the cart');
+    const existingItem = cart.find((item) => item.id === product.id);
+    if (existingItem) {
+      setCart(
+        cart.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        )
+      );
     } else {
-      setCart([...cart, product]);
+      setCart([...cart, { ...product, quantity: 1 }]);
     }
   };
 
-  // Function to remove product from cart
   const removeFromCart = (productId) => {
     setCart(cart.filter((item) => item.id !== productId));
   };
 
+  const updateQuantity = (productId, quantity) => {
+    setCart(
+      cart.map((item) =>
+        item.id === productId ? { ...item, quantity: Math.max(1, quantity) } : item
+      )
+    );
+  };
+
   return (
-    <div className="App">
-      {/* Navbar component with cart count */}
-      <Navbar cartCount={cart.length} openModal={() => setIsModalOpen(true)} />
-      
-      {/* Product List */}
-      <div className="product-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
-        {products.map((product) => (
-          <Product key={product.id} product={product} addToCart={addToCart} />
-        ))}
+    <Router>
+      <div className="App">
+        <Navbar cartCount={cart.length} />
+
+        <Routes>
+          {/* Redirect from root `/` to `/products` */}
+          <Route path="/" element={<Navigate to="/products" />} />
+
+          {/* Product Page Route */}
+          <Route
+            path="/products"
+            element={<ProductList products={products} addToCart={addToCart} />}
+          />
+
+          {/* Cart Page Route */}
+          <Route
+            path="/cart"
+            element={<CartPage cart={cart} removeFromCart={removeFromCart} updateQuantity={updateQuantity} />}
+          />
+        </Routes>
       </div>
-      
-      {/* Cart Modal */}
-      {isModalOpen && (
-        <CartModal
-          cart={cart}
-          removeFromCart={removeFromCart}
-          closeModal={() => setIsModalOpen(false)}
-        />
-      )}
-    </div>
+    </Router>
   );
 }
 
