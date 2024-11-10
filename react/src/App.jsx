@@ -46,25 +46,36 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
+      <div className="App min-h-screen flex flex-col">
+        {/* Centered container for Navbar and main content */}
         <Navbar cartCount={cart.length} />
+        
+        <main className="flex-grow flex justify-center items-center">
+          <Routes>
+            {/* Redirect from root `/` to `/products` */}
+            <Route path="/" element={<Navigate to="/products" />} />
 
-        <Routes>
-          {/* Redirect from root `/` to `/products` */}
-          <Route path="/" element={<Navigate to="/products" />} />
+            {/* Product Page Route */}
+            <Route
+              path="/products"
+              element={<ProductList products={products} addToCart={addToCart} />}
+            />
 
-          {/* Product Page Route */}
-          <Route
-            path="/products"
-            element={<ProductList products={products} addToCart={addToCart} />}
-          />
-
-          {/* Cart Page Route */}
-          <Route
-            path="/cart"
-            element={<CartPage cart={cart} removeFromCart={removeFromCart} updateQuantity={updateQuantity} />}
-          />
-        </Routes>
+            {/* Cart Page Route */}
+            <Route
+              path="/cart"
+              element={
+                <div className="w-full max-w-5xl p-6">
+                  <CartPage
+                    cart={cart}
+                    removeFromCart={removeFromCart}
+                    updateQuantity={updateQuantity}
+                  />
+                </div>
+              }
+            />
+          </Routes>
+        </main>
       </div>
     </Router>
   );

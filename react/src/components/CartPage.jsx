@@ -5,7 +5,7 @@ function CartPage({ cart, removeFromCart, updateQuantity }) {
   const discountedTotal = totalPrice * 0.9; // 10% discount
 
   return (
-    <div className="bg-gray-100 min-h-screen w-full flex justify-center items-center p-6">
+    <div className="bg-gray-100 h-screen w-screen flex justify-center items-center p-0 m-0">
       <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
         <h2 className="text-3xl font-semibold mb-6 text-center">Your Cart</h2>
 
@@ -20,7 +20,9 @@ function CartPage({ cart, removeFromCart, updateQuantity }) {
                     <img src={item.image} alt={item.title} className="h-20 w-20 object-contain" />
                     <div className="text-left flex-1">
                       <h3 className="font-medium">{item.title}</h3>
-                      <p className="text-gray-700">${item.price.toFixed(2)} x {item.quantity} = ${(item.price * item.quantity).toFixed(2)}</p>
+                      <p className="text-gray-700">
+                        ${item.price.toFixed(2)} x {item.quantity} = ${(item.price * item.quantity).toFixed(2)}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-4">

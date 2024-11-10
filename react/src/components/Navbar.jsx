@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 
 function Navbar({ cartCount }) {
   return (
-    <nav className="bg-gray-800 p-4 flex justify-between items-center text-white">
-      <Link to="/" className="text-2xl font-bold">
+    <nav className="bg-gray-800 p-4 w-full flex justify-between items-center text-white fixed top-0 left-0 z-10">
+      <Link to="/" className="text-xl font-bold">
         RIAN SHOP
       </Link>
-      <Link to="/cart" className="relative bg-blue-600 text-white py-2 px-4 rounded ml-4">
+      <Link to="/cart" className="bg-blue-600 text-white py-1 px-3 rounded text-sm">
         Cart ({cartCount})
       </Link>
     </nav>
